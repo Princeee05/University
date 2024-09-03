@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Computer Part Ordering Form</title>
+  </head>
+  <style>
+    *,
+    ::before,
+    ::after {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    /* center the form */
+    body {
+      display: flex;
+      justify-content: center;
+    }
+    /* made the font size dynamic for responsiveness */
+    h1 {
+      font-size: clamp(1.8rem, 3vw, 4rem);
+    }
+    /* used flexbox for responsiveness */
+    .wrapper {
+      display: flex;
+      justify-content: space-evenly;
+      flex-direction: column;
+
+      height: 100vh;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      justify-content: space-around;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 20px;
+    }
+    input,
+    select {
+      outline: none;
+      height: 40px;
+      padding: 10px;
+      cursor: pointer;
+    }
+    textarea {
+      height: 150px;
+      padding: 10px;
+    }
+    /* submit button styling */
+    #orderButton {
+      background-color: #007bff;
+      border: 2px solid #007bff;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 20px;
+      height: 50px;
+    }
+
+    @media (max-width: 1140px) {
+      body {
+        padding: 20px;
+      }
+    }
+  </style>
+  <body>
+    <div class="wrapper">
+      <h1>Computer Parts Ordering Form</h1>
+      <form class="container" id="form">
+        <div class="field">
+          <label for="component">Select Computer Component</label>
+          <select class="formControl" title="component" id="component">
+            <option value="cpu">CPU</option>
+            <option value="gpu">GPU</option>
+            <option value="ram">RAM</option>
+            <option value="storage">Storage</option>
+            <option value="motherboard">Motherboard</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="Qty">Quantity</label>
+          <input
+            type="number"
+            name="Qty"
+            id="Qty"
+            value="0"
+            min="1"
+            placeholder="Input a valid number"
+          />
+        </div>
+        <div class="field">
+          <label for="comments">Comments</label>
+          <textarea
+            name="Comments"
+            id="comments"
+            placeholder="Please Put Your comments here"
+          ></textarea>
+        </div>
+        <input type="submit" id="orderButton" />
+      </form>
+      <div id="orderBanner"></div>
+    </div>
+    <script>
+      const item = document.getElementById("component");
+      const Qty = document.getElementById("Qty");
+      const comments = document.getElementById("comments");
+      const form = document.querySelector("#form");
+      const order = document.querySelector("#orderBanner");
+
+      const submitForm = (event) => {
+        event.preventDefault(); // prevent reload onSubmit
+        //create the summary popUp, conditionally render textarea info based on user input
+        let orderPopUp = `
+        <h2>Your Summary:</h2>
+        <br/>
+        <p>Computer Part: <span>${item.value.toUpperCase()}</span></p>
+        <p>Quantity: <span>${Qty.value.toUpperCase()}</span></p>
+        ${
+          comments.value == ""
+            ? `<p>No Comments were made</p>`
+            : `<p>Comments: <span>${comments.value.toUpperCase()}</span></p>`
+        }
+        `;
+
+        order.innerHTML = orderPopUp;
+      };
+      //utilize the javascript logic and link it to the form
+      form.addEventListener("submit", submitForm);
+    </script>
+  </body>
+</html>
