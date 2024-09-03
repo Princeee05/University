@@ -110,15 +110,56 @@ function ready(){
   document.getElementsByClassName('btn-checkout')[0].addEventListener('click', checkoutButtonClicked);
 }
 
-//Checkout button function
+// Checkout button function
 function checkoutButtonClicked() {
-  alert('Your order has been placed')
-  var cartContent = document.getElementsByClassName('cart-content')[0]
+  // Get the cart items
+  const cartContent = document.getElementsByClassName('cart-content')[0];
+  const orderItems = cartContent.getElementsByClassName('box');
+  
+  // Check if the cart is empty
+  if (orderItems.length === 0) {
+      alert('Your cart is empty!');
+      return;
+  }
+
+  // Prepare order summary
+  const orderSummaryPopup = document.getElementById('order-summary-popup');
+  const orderItemsContainer = orderSummaryPopup.querySelector('.order-items');
+  orderItemsContainer.innerHTML = '';  // Clear previous items
+  let total = 0;
+
+  // Populate the order summary with cart items
+  for (let i = 0; i < orderItems.length; i++) {
+      const item = orderItems[i];
+      const itemName = item.getElementsByClassName('product-title')[0].innerText;
+      const itemPrice = parseFloat(item.getElementsByClassName('price')[0].innerText.replace('$', ''));
+      const itemQuantity = parseInt(item.getElementsByClassName('quantity')[0].value);
+      
+      total += itemPrice * itemQuantity;
+
+      const summaryItem = document.createElement('p');
+      summaryItem.innerText = `${itemQuantity}x ${itemName} - $${(itemPrice * itemQuantity).toFixed(2)}`;
+      orderItemsContainer.appendChild(summaryItem);
+  }
+
+  // Update total in the popup
+  orderSummaryPopup.querySelector('.popup-total').innerText = `Total: $${total.toFixed(2)}`;
+
+  // Show the popup
+  orderSummaryPopup.style.display = 'flex';
+
+  // Clear the cart
   while (cartContent.hasChildNodes()) {
-    cartContent.removeChild(cartContent.firstChild);
+      cartContent.removeChild(cartContent.firstChild);
   }
   updateTotal();
 }
+
+// Close popup when clicking close button
+document.querySelector('.btn-close-popup').onclick = function() {
+  document.getElementById('order-summary-popup').style.display = 'none';
+};
+
 
 //Remove from cart
 function removeCartItem(event){
@@ -127,7 +168,7 @@ function removeCartItem(event){
   updateTotal();
 }
 
-//Changing Qunatity
+//Changing Quantity
 function quantityChanged(event){
   var input = event.target
   if (isNaN(input.value) || input.value <= 0) {
