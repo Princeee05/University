@@ -112,8 +112,11 @@ function ready(){
 
 //Checkout button function
 function checkoutButtonClicked() {
-  alert('Your order has been placed')
   var cartContent = document.getElementsByClassName('cart-content')[0]
+  if(cartContent.children.length === 0){
+    alert('your cart is empty')
+  }
+  alert('Your order has been placed')
   while (cartContent.hasChildNodes()) {
     cartContent.removeChild(cartContent.firstChild);
   }
