@@ -115,6 +115,7 @@ function checkoutButtonClicked() {
   var cartContent = document.getElementsByClassName('cart-content')[0]
   if(cartContent.children.length === 0){
     alert('your cart is empty')
+    return;
   }
   alert('Your order has been placed')
   while (cartContent.hasChildNodes()) {
